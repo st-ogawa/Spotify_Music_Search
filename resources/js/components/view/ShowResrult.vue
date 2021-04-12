@@ -64,7 +64,7 @@ export default {
       axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken 
       : axios.defaults.headers.common['Authorization'] = "Bearer " + Setting.LARAVEL_TOKEN;
 
-      this.$store.getters.getToken ? ENDPOINT = "http://192.168.1.29:8000/api/favorite" : ENDPOINT = "http://192.168.1.29:8000/api/public"
+      this.$store.getters.getToken ? ENDPOINT = "http://192.168.1.29:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public"
   
       axios.post(ENDPOINT,
       {"song":song, 
@@ -75,7 +75,7 @@ export default {
       "spotify_url":externalLink,
       })
       .then(response=> {
-        const deleteId = response.data.data.favorite_id
+        const deleteId = response.data.favorite_id
         this.$store.dispatch('getId', {deleteId,spotifyId});
         this.modal = true;
         this.clearMessage();
@@ -85,8 +85,7 @@ export default {
       .catch(error=>{
         this.modal = true;
         this.clearMessage();
-        
-        this.message = error.response.data.data.message;
+        this.message = error.response.data.message;
       })
     },
     
