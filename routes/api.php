@@ -7,7 +7,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/favorite','FavoriteController@index');
+Route::post('/public','FavoriteController@index');
 
-Route::get('/favorite','FavoriteController@getMusicData');
+Route::get('/public','FavoriteController@getMusicData');
 
