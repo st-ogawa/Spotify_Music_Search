@@ -2160,9 +2160,9 @@ __webpack_require__.r(__webpack_exports__);
       var ENDPOINT;
       this.authToken = this.$store.getters.getToken;
       this.authToken ? axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken : axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + _setting_setting__WEBPACK_IMPORTED_MODULE_3__["default"].LARAVEL_TOKEN;
-      this.$store.getters.getToken ? ENDPOINT = "http://192.168.1.29:8000/api/favorite" : ENDPOINT = "http://192.168.1.29:8000/api/public";
+      this.$store.getters.getToken ? ENDPOINT = "http://192.168.1.29:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public";
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(ENDPOINT).then(function (response) {
-        _this.data = response.data.data;
+        _this.data = response.data;
         _this.loading = false;
       })["catch"](function (error) {
         _this.dataExists = true;
@@ -2555,7 +2555,7 @@ __webpack_require__.r(__webpack_exports__);
       var externalLink = this.item.externalLink;
       var ENDPOINT;
       this.$store.getters.getToken ? axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken : axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + _setting_setting__WEBPACK_IMPORTED_MODULE_2__["default"].LARAVEL_TOKEN;
-      this.$store.getters.getToken ? ENDPOINT = "http://192.168.1.29:8000/api/favorite" : ENDPOINT = "http://192.168.1.29:8000/api/public";
+      this.$store.getters.getToken ? ENDPOINT = "http://192.168.1.29:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public";
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(ENDPOINT, {
         "song": song,
         "album": album,
@@ -2564,7 +2564,7 @@ __webpack_require__.r(__webpack_exports__);
         "spotify_id": spotifyId,
         "spotify_url": externalLink
       }).then(function (response) {
-        var deleteId = response.data.data.favorite_id;
+        var deleteId = response.data.favorite_id;
 
         _this.$store.dispatch('getId', {
           deleteId: deleteId,
@@ -2581,7 +2581,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.clearMessage();
 
-        _this.message = error.response.data.data.message;
+        _this.message = error.response.data.message;
       });
     },
     remove: function remove() {
@@ -57125,21 +57125,21 @@ try {
  */
 
 
-window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"); // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just
  * a simple convenience so we don't have to attach every token manually.
  */
+// let token = document.head.querySelector('meta[name="csrf-token"]');
+// if (token) {
+//     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+// } 
+// else {
+//     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+// }
 
-var token = document.head.querySelector('meta[name="csrf-token"]');
-
-if (token) {
-  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
