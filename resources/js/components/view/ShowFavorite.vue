@@ -47,8 +47,7 @@ export default {
   methods:{
     remove:function(){
       const id = this.item.id
-      axios.delete(`http://192.168.1.29:8000/api/favorite/${id}`)
-
+      axios.delete(`http://127.0.0.1:8000/api/favorite/${id}`)
       this.inActive  = false
       this.popUp = true
       this.message = "お気に入りから削除しました"
@@ -56,13 +55,16 @@ export default {
     },
     add:function(){
 
-      axios.post("http://192.168.1.29:8000/api/favorite",
+      axios.post("http://127.0.0.1:8000/api/public",
       {"song" : this.item.song, 
       "album" : this.item.album, 
       "artist" : this.item.artist, 
       "jacket" : this.item.jacket, 
       "spotify_id" : this.item.spotify_id, 
       "spotify_url": this.item.spotify_url})
+      .then(res=>{
+        console.log(res)
+      })
       this.inActive = !this.inActive
       this.popUp = true
       this.message = "お気に入りに追加しました"

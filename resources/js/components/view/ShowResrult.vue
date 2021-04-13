@@ -50,7 +50,6 @@ export default {
 
   methods:{
     add:function(){
-      
       const song = this.item.song;
       const album = this.item.album;
       const jacket = this.item.jacket;
@@ -75,7 +74,7 @@ export default {
       "spotify_url":externalLink,
       })
       .then(response=> {
-        const deleteId = response.data.favorite_id
+        const deleteId = response.data.id
         this.$store.dispatch('getId', {deleteId,spotifyId});
         this.modal = true;
         this.clearMessage();
@@ -91,7 +90,7 @@ export default {
     
     remove:function(){
       const id = this.item.deleteId
-      axios.delete(`http://192.168.1.29:8000/api/favorite/${id}`)
+      axios.delete(`http://127.0.0.1:8000/api/favorite/${id}`)
       this.$store.dispatch('getisFavorite', id);
       this.message = "お気に入りから削除しました";
       this.modal = true;
