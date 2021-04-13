@@ -22,6 +22,7 @@ class Favorite extends Migration
             $table->string('spotify_id');
             $table->string('spotify_url');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -15,19 +15,28 @@ class FavoriteController extends Controller
        $favorite->jacket = request()->input('jacket');
        $favorite->spotify_id = request()->input('spotify_id');
        $favorite->spotify_url = request()->input('spotify_url');
-       ;
-       if($favorite->where('spotify_url',$favorite->spotify_url)->exists()){
-        abort(403, 'すでに登録済みです');
-       }
-       else{
-        $favorite->save();
-       }
        
-       return $favorite;
+        if($favorite->where('spotify_url',$favorite->spotify_url)->exists()){
+            abort(403, 'すでに登録済みです');
+            
+        }
+        else{
+            if(Favorite::onlyTrashed()->whereNotNull('id')->get()){
+                Favorite::onlyTrashed()->whereNotNull('id')->restore();
+            }
+            $favorite->save();
+        }
     }
 
     public function getMusicData(){
         $favorite = Favorite::all();
         return $favorite;    
     }
+
+    public function deleteMusicData($id){
+        $deleteMusicData = Favorite::findOrFail($id);
+        $deleteMusicData->delete();
+    }
+
+  
 }
