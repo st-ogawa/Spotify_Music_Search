@@ -88,13 +88,16 @@ export default {
 
             axios.get(ENDPOINT)
             .then(response=>{
-              this.data = response.data;
-              this.loading = false
-            }).catch(error =>{
-              this.dataExists = true
-              this.error = error.response.data.data.message
+              if(!response.data.length){
+                this.dataExists = true
+                this.error = 'お気に入りはありません'
+              }else{
+                this.data = response.data;
+                this.loading = false
+              }
               
-           })
+            })
+            
        },
        clickCallback:function(pageNum){
             this.$store.dispatch('getCurrentPage', pageNum);

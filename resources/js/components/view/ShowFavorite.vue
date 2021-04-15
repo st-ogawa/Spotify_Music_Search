@@ -62,9 +62,6 @@ export default {
       "jacket" : this.item.jacket, 
       "spotify_id" : this.item.spotify_id, 
       "spotify_url": this.item.spotify_url})
-      .then(res=>{
-        console.log(res)
-      })
       this.inActive = !this.inActive
       this.popUp = true
       this.message = "お気に入りに追加しました"

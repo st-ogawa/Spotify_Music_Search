@@ -2,7 +2,7 @@
     <div class="header">
         <div class="header-navi">
             <div class="logo-container">
-                <a href="http://localhost:8080/"><img alt="logo" src="../../../../public/image/logo/Spotify.png" class="header-logo"></a>
+                <a href="http://127.0.0.1:8000"><img alt="logo" src="../../../../public/image/logo/Spotify.png" class="header-logo"></a>
             </div>
             <nav>
                 <ul>
