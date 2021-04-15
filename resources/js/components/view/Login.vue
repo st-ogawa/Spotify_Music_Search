@@ -89,14 +89,14 @@ export default {
 }
 
 #login-mail{
-  background-image: url(../../assets/icon/mail.png);
+  background-image: url(../../../../public/image/icon/mail.png);
   background-repeat: no-repeat;
   background-size: 20px;
 	background-position: left 10px bottom 5px ; 
 }
 
 #login-pass{
-  background-image: url(../../assets/icon/lock.png);
+  background-image: url(../../../../public/image/icon/lock.png);
   background-repeat: no-repeat;
   background-size: 20px;
 	background-position: left 10px bottom 5px ; 
