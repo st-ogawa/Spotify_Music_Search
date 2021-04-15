@@ -12,3 +12,4 @@ Route::post('/public','FavoriteController@index');
 Route::get('/public','FavoriteController@getMusicData');
 
 Route::delete('/favorite/{id}', 'FavoriteController@deleteMusicData');
+
