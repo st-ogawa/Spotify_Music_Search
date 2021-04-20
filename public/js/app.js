@@ -2571,15 +2571,16 @@ __webpack_require__.r(__webpack_exports__);
     login: function login() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('http://192.168.1.29:8000/api/login', {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('http://127.0.0.1:8000/api/login', {
         'email': this.loginMail,
         'password': this.loginPass
       }).then(function (res) {
+        console.log(res);
         _this.modal = true;
 
-        _this.$store.dispatch('getAuthToken', res.data.data.Token);
+        _this.$store.dispatch('getAuthToken', res.data.Token);
 
-        var userName = res.data.data.user.name;
+        var userName = res.data.user.name;
 
         _this.$store.dispatch('getLoginUserName', userName);
 
@@ -2587,6 +2588,7 @@ __webpack_require__.r(__webpack_exports__);
           _this.$router.push('/');
         }, 1500);
       })["catch"](function (error) {
+        console.log(error.response);
         _this.errmsg = error.response.data.error;
       });
     },
@@ -2677,23 +2679,24 @@ __webpack_require__.r(__webpack_exports__);
     register: function register() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('http://192.168.1.29:8000/api/register', {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('http://127.0.0.1:8000/api/register', {
         'name': this.userName,
         'email': this.registerMail,
         'password': this.registerPass
       }).then(function (res) {
+        console.log(res);
         _this.modal = true;
-        var userName = res.data.data.user.name;
+        var userName = res.data.user.name;
 
         _this.$store.dispatch('getLoginUserName', userName);
 
-        _this.$store.dispatch('getAuthToken', res.data.data.Token);
+        _this.$store.dispatch('getAuthToken', res.data.Token);
 
         setTimeout(function () {
           _this.$router.push('/');
         }, 1500);
       })["catch"](function (error) {
-        var errmsg = error.response.data.error;
+        var errmsg = error.response.data.errors;
         errmsg.name === undefined ? _this.userErrMsg = '' : _this.userErrMsg = errmsg.name[0];
         errmsg.email === undefined ? _this.mailErrMsg = '' : _this.mailErrMsg = errmsg.email[0];
         errmsg.password === undefined ? _this.passErrMsg = '' : _this.passErrMsg = errmsg.password[0];
