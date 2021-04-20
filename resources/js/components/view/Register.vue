@@ -60,21 +60,21 @@ export default {
   methods:{
     register:function(){
       
-      axios.post('http://192.168.1.29:8000/api/register',{
+      axios.post('http://127.0.0.1:8000/api/register',{
         'name': this.userName,
         'email' : this.registerMail,
         'password' : this.registerPass,
       })
       .then(res=>{
+        console.log(res)
         this.modal = true
-        const userName = res.data.data.user.name
+        const userName = res.data.user.name
         this.$store.dispatch('getLoginUserName',userName)
-        this.$store.dispatch('getAuthToken', res.data.data.Token)
+        this.$store.dispatch('getAuthToken', res.data.Token)
         setTimeout(()=>{this.$router.push('/')},1500)
       })
       .catch(error=>{
-        
-        const errmsg = error.response.data.error
+        const errmsg = error.response.data.errors
         errmsg.name === undefined?
         this.userErrMsg = '':
         this.userErrMsg = errmsg.name[0]

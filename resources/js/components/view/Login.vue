@@ -51,17 +51,19 @@ export default {
   },
   methods:{
     login(){
-      axios.post('http://192.168.1.29:8000/api/login',{
+      axios.post('http://127.0.0.1:8000/api/login',{
         'email' : this.loginMail,
         'password' : this.loginPass
       }).then(res=>{
+        console.log(res)
         this.modal = true
-        this.$store.dispatch('getAuthToken', res.data.data.Token)
-        const userName = res.data.data.user.name
+        this.$store.dispatch('getAuthToken', res.data.Token)
+        const userName = res.data.user.name
         this.$store.dispatch('getLoginUserName',userName)
         setTimeout(()=>{this.$router.push('/')},1500)
       })
       .catch(error=>{
+        console.log(error.response)
         this.errmsg = error.response.data.error;
       })
     },

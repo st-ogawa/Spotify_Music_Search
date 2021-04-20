@@ -11,7 +11,7 @@ class FavoriteController extends Controller
        $checkFavorite = new Favorite();
 
        $favorite_already_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
-                                          ->whereNull('deleted_at')->first();
+                                               ->whereNull('deleted_at')->first();
 
        $favorite_already_deleted = Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->get();
        
