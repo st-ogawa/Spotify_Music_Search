@@ -42,19 +42,6 @@ class AuthController extends Controller
 
     public function login(Request $request){
 
-        $rules = [
-            'email' => ['required','email'],
-            'password' => ['required'],
-         ];
-         $messages = [
-             'email.required'   => 'メールアドレスを入力してください。',           
-             'email.email'      => '正しいメールアドレスを入力してください。',   
-             'password.required'=> 'パスワードを入力してください', 
-         ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-        $validated = $validator->validate();
-
         $credentials = $request->only('email', 'password');
 
         if(auth()->attempt($credentials)) {
@@ -65,7 +52,7 @@ class AuthController extends Controller
 
         }
         else{
-            abort(401);
+            abort(401, 'メールかパスワードが間違っています');
         }  
     }
 }
