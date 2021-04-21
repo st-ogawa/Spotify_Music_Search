@@ -63,7 +63,7 @@ export default {
       axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken 
       : axios.defaults.headers.common['Authorization'] = "Bearer " + Setting.LARAVEL_TOKEN;
 
-      this.$store.getters.getToken ? ENDPOINT = "http://192.168.1.29:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public"
+      this.$store.getters.getToken ? ENDPOINT = "http://127.0.0.1:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public"
   
       axios.post(ENDPOINT,
       {"song":song, 
@@ -90,7 +90,7 @@ export default {
     
     remove:function(){
       const id = this.item.deleteId
-      axios.delete(`http://127.0.0.1:8000/api/favorite/${id}`)
+      axios.delete(`http://127.0.0.1:8000/api/public/${id}`)
       this.$store.dispatch('getisFavorite', id);
       this.message = "お気に入りから削除しました";
       this.modal = true;

@@ -16,6 +16,7 @@ const getters = {
 const actions = {
   getAuthToken : ({commit},authToken)=> {
     commit('setAuthToken', authToken);
+
   },
   refreshStateToken :({commit}) => {
     commit('refreshToken')

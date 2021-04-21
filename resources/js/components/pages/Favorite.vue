@@ -84,10 +84,11 @@ export default {
             axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken 
             : axios.defaults.headers.common['Authorization'] = "Bearer " + Setting.LARAVEL_TOKEN;
 
-            this.$store.getters.getToken ? ENDPOINT = "http://192.168.1.29:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public"
+            this.$store.getters.getToken ? ENDPOINT = "http://127.0.0.1:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public"
 
             axios.get(ENDPOINT)
             .then(response=>{
+              
               if(!response.data.length){
                 this.dataExists = true
                 this.error = 'お気に入りはありません'
