@@ -55,16 +55,15 @@ export default {
         'email' : this.loginMail,
         'password' : this.loginPass
       }).then(res=>{
-        console.log(res)
+        
         this.modal = true
-        this.$store.dispatch('getAuthToken', res.data.Token)
+        this.$store.dispatch('getAuthToken', res.data.token)
         const userName = res.data.user.name
         this.$store.dispatch('getLoginUserName',userName)
         setTimeout(()=>{this.$router.push('/')},1500)
       })
       .catch(error=>{
-        console.log(error.response)
-        this.errmsg = error.response.data.error;
+        this.errmsg = error.response.data.message;
       })
     },
      viewPassword(){

@@ -66,11 +66,10 @@ export default {
         'password' : this.registerPass,
       })
       .then(res=>{
-        console.log(res)
         this.modal = true
         const userName = res.data.user.name
         this.$store.dispatch('getLoginUserName',userName)
-        this.$store.dispatch('getAuthToken', res.data.Token)
+        this.$store.dispatch('getAuthToken', res.data.token)
         setTimeout(()=>{this.$router.push('/')},1500)
       })
       .catch(error=>{
