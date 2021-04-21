@@ -1,23 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
-use App\Favorite;
-use Illuminate\Http\Request;
+namespace App;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
 
 
-class FavoriteController extends Controller
+class Favorite extends Model
 {
+    use SoftDeletes;
+    protected $guarded = [
+        'id'
+    ];
+    
     public function index(){
-    //     $user = auth()->user();
-    //    dd($user);
-
-       $checkFavorite = new Favorite();
-
-       $favorite_already_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
-                                               ->whereNull('deleted_at')->first();
-
-       $favorite_already_deleted = Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->first();
-   
+     
+        $checkFavorite = new Favorite();
+ 
+        $favorite_already_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
+                                                ->whereNull('deleted_at')->first();
+ 
+        $favorite_already_deleted = Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->first();
+       
         if($favorite_already_exist){
             abort(403, 'すでに登録済みです');
             
@@ -39,17 +42,12 @@ class FavoriteController extends Controller
             return $favorite;
         }
     }
-
-    public function getMusicData(){
-        $favorite = Favorite::all();
-        
-        return $favorite;    
-    }
-
-    public function deleteMusicData($id){
+    public function delete($id){
         $deleteMusicData = Favorite::findOrFail($id);
         $deleteMusicData->delete();
     }
+ 
+   
+ 
 
-  
 }
