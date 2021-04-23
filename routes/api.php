@@ -9,7 +9,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/public','PublicController@index');
 Route::get('/public','PublicController@getMusicData');
-Route::delete('/public/{id}', 'PublicController@deleteMusicData');
+Route::delete('/public/{id}', 'PublicController@delete');
 
 
 Route::post('/register', 'AuthController@userRegister');

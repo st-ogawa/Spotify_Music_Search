@@ -1,6 +1,7 @@
 const getDefaultState =()=> {
   return {
-    userName:''
+    userName:'',
+    userId:''
   }
 }
 
@@ -10,11 +11,14 @@ const state = getDefaultState
 const getters = {
   getUserName:state =>{
     return  state.userName 
+  },
+  getUserId:state =>{
+    return state.userId
   }
 }
 const actions = {
-  getLoginUserName:({commit},userName) => {
-    commit('setLoginUserName',userName)
+  getLoginUser:({commit},user) => {
+    commit('setLoginUser',user)
   },
   getSessionUserName :({commit}) => {
       commit('setSessionUserName')
@@ -24,9 +28,10 @@ const actions = {
   }
 }
 const mutations = {
-   setLoginUserName : (state,userName) => {
-    sessionStorage.setItem('user',userName)
-     state.userName = userName
+   setLoginUser : (state,user) => {
+    sessionStorage.setItem('user',user.name)
+    state.userName = user.name
+    state.userId = user.id
    },
    setSessionUserName : state => {
      state.userName = sessionStorage.getItem('user')

@@ -67,8 +67,8 @@ export default {
       })
       .then(res=>{
         this.modal = true
-        const userName = res.data.user.name
-        this.$store.dispatch('getLoginUserName',userName)
+        const user = res.data.user
+        this.$store.dispatch('getLoginUser',user)
         this.$store.dispatch('getAuthToken', res.data.token)
         setTimeout(()=>{this.$router.push('/')},1500)
       })

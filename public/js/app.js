@@ -2261,7 +2261,7 @@ __webpack_require__.r(__webpack_exports__);
       var ENDPOINT;
       this.authToken = this.$store.getters.getToken;
       this.authToken ? axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken : axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + _setting_setting__WEBPACK_IMPORTED_MODULE_3__["default"].LARAVEL_TOKEN;
-      this.$store.getters.getToken ? ENDPOINT = "http://192.168.1.29:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public";
+      this.$store.getters.getToken ? ENDPOINT = "http://127.0.0.1:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public";
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(ENDPOINT).then(function (response) {
         if (!response.data.length) {
           _this.dataExists = true;
@@ -2575,21 +2575,19 @@ __webpack_require__.r(__webpack_exports__);
         'email': this.loginMail,
         'password': this.loginPass
       }).then(function (res) {
-        console.log(res);
         _this.modal = true;
 
-        _this.$store.dispatch('getAuthToken', res.data.Token);
+        _this.$store.dispatch('getAuthToken', res.data.token);
 
-        var userName = res.data.user.name;
+        var user = res.data.user;
 
-        _this.$store.dispatch('getLoginUserName', userName);
+        _this.$store.dispatch('getLoginUser', user);
 
         setTimeout(function () {
           _this.$router.push('/');
         }, 1500);
       })["catch"](function (error) {
-        console.log(error.response);
-        _this.errmsg = error.response.data.error;
+        _this.errmsg = error.response.data.message;
       });
     },
     viewPassword: function viewPassword() {
@@ -2684,13 +2682,12 @@ __webpack_require__.r(__webpack_exports__);
         'email': this.registerMail,
         'password': this.registerPass
       }).then(function (res) {
-        console.log(res);
         _this.modal = true;
-        var userName = res.data.user.name;
+        var user = res.data.user;
 
-        _this.$store.dispatch('getLoginUserName', userName);
+        _this.$store.dispatch('getLoginUser', user);
 
-        _this.$store.dispatch('getAuthToken', res.data.Token);
+        _this.$store.dispatch('getAuthToken', res.data.token);
 
         setTimeout(function () {
           _this.$router.push('/');
@@ -2866,14 +2863,15 @@ __webpack_require__.r(__webpack_exports__);
       var externalLink = this.item.externalLink;
       var ENDPOINT;
       this.$store.getters.getToken ? axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken : axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + _setting_setting__WEBPACK_IMPORTED_MODULE_2__["default"].LARAVEL_TOKEN;
-      this.$store.getters.getToken ? ENDPOINT = "http://192.168.1.29:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public";
+      this.$store.getters.getToken ? ENDPOINT = "http://127.0.0.1:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public";
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(ENDPOINT, {
         "song": song,
         "album": album,
         "artist": artist,
         "jacket": jacket,
         "spotify_id": spotifyId,
-        "spotify_url": externalLink
+        "spotify_url": externalLink,
+        "user_id": this.$store.getters.getUserId
       }).then(function (response) {
         var deleteId = response.data.id;
 
@@ -2897,7 +2895,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     remove: function remove() {
       var id = this.item.deleteId;
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("http://127.0.0.1:8000/api/favorite/".concat(id));
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("http://127.0.0.1:8000/api/public/".concat(id));
       this.$store.dispatch('getisFavorite', id);
       this.message = "お気に入りから削除しました";
       this.modal = true;
@@ -60013,7 +60011,8 @@ var mutations = {
 __webpack_require__.r(__webpack_exports__);
 var getDefaultState = function getDefaultState() {
   return {
-    userName: ''
+    userName: '',
+    userId: ''
   };
 };
 
@@ -60021,12 +60020,15 @@ var state = getDefaultState;
 var getters = {
   getUserName: function getUserName(state) {
     return state.userName;
+  },
+  getUserId: function getUserId(state) {
+    return state.userId;
   }
 };
 var actions = {
-  getLoginUserName: function getLoginUserName(_ref, userName) {
+  getLoginUser: function getLoginUser(_ref, user) {
     var commit = _ref.commit;
-    commit('setLoginUserName', userName);
+    commit('setLoginUser', user);
   },
   getSessionUserName: function getSessionUserName(_ref2) {
     var commit = _ref2.commit;
@@ -60038,9 +60040,10 @@ var actions = {
   }
 };
 var mutations = {
-  setLoginUserName: function setLoginUserName(state, userName) {
-    sessionStorage.setItem('user', userName);
-    state.userName = userName;
+  setLoginUser: function setLoginUser(state, user) {
+    sessionStorage.setItem('user', user.name);
+    state.userName = user.name;
+    state.userId = user.id;
   },
   setSessionUserName: function setSessionUserName(state) {
     state.userName = sessionStorage.getItem('user');

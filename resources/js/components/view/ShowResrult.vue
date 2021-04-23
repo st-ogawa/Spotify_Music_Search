@@ -72,6 +72,7 @@ export default {
       "jacket":jacket,
       "spotify_id":spotifyId,
       "spotify_url":externalLink,
+      "user_id":this.$store.getters.getUserId
       })
       .then(response=> {
         const deleteId = response.data.id
