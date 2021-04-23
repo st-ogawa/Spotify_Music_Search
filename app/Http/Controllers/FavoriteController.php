@@ -1,16 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Favorite;
 use Illuminate\Http\Request;
+
 
 
 class FavoriteController extends Controller
 {
     public function index(){
-    //     $user = auth()->user();
-    //    dd($user);
-
+       
+       
        $checkFavorite = new Favorite();
 
        $favorite_already_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
@@ -23,10 +24,10 @@ class FavoriteController extends Controller
             
         }
         else if($favorite_already_deleted){
-        
             Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->restore();
         }
         else{
+            
             $favorite = new Favorite();
             $favorite->song = request()->input('song');
             $favorite->album = request()->input('album');
@@ -34,16 +35,16 @@ class FavoriteController extends Controller
             $favorite->jacket = request()->input('jacket');
             $favorite->spotify_id = request()->input('spotify_id');
             $favorite->spotify_url = request()->input('spotify_url');
-
+            $favorite->user_id = request()->input('user_id');
             $favorite->save();
             return $favorite;
         }
     }
 
     public function getMusicData(){
-        $favorite = Favorite::all();
-        
-        return $favorite;    
+        $favorite = new Favorite();
+        $favorite->where('user_id');
+        return $favorite;
     }
 
     public function deleteMusicData($id){
