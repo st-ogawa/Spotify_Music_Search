@@ -20,25 +20,27 @@ const actions = {
   getLoginUser:({commit},user) => {
     commit('setLoginUser',user)
   },
-  getSessionUserName :({commit}) => {
-      commit('setSessionUserName')
+  getSessionUser :({commit}) => {
+      commit('setSessionUser')
   },
-  refreshStateUserName:({commit}) => {
-      commit('refreshUserName')
+  refreshStateUser:({commit}) => {
+      commit('refreshUser')
   }
 }
 const mutations = {
    setLoginUser : (state,user) => {
-    sessionStorage.setItem('user',user.name)
-    state.userName = user.name
-    state.userId = user.id
+      let users = {name: user.name, id: user.id,}
+      sessionStorage.setItem('user',JSON.stringify(users))
+      state.userName = user.name
+      state.userId = user.id
    },
-   setSessionUserName : state => {
-     state.userName = sessionStorage.getItem('user')
+   setSessionUser : state => {
+      let user = JSON.parse(sessionStorage.getItem('user'))
+      state.userName = user.name;
+      state.userId = user.id;
    },
-   refreshUserName : state  => {
+   refreshUser : state  => {
      state.userName = Object.assign(state,getDefaultState())
-     
    }
 }
     
