@@ -49,23 +49,29 @@ export default {
   },
 
   methods:{
-    add:function(){
+    endpoint: function (){
+
+      this.$store.getters.getToken ? 
+      axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken 
+      : axios.defaults.headers.common['Authorization'] = "Bearer " + Setting.LARAVEL_TOKEN;
+
+      if(this.$store.getters.getToken){
+        return "http://127.0.0.1:8000/api/favorite" 
+      } 
+      else{
+        return "http://127.0.0.1:8000/api/public"
+      }
+    },
+
+    add: function(){
       const song = this.item.song;
       const album = this.item.album;
       const jacket = this.item.jacket;
       const artist = this.item.artist;
       const spotifyId = this.item.spotifyId;
       const externalLink = this.item.externalLink
-
-      let ENDPOINT;
-
-      this.$store.getters.getToken ? 
-      axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken 
-      : axios.defaults.headers.common['Authorization'] = "Bearer " + Setting.LARAVEL_TOKEN;
-
-      this.$store.getters.getToken ? ENDPOINT = "http://127.0.0.1:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public"
-  
-      axios.post(ENDPOINT,
+    
+      axios.post(this.endpoint(),
       {"song":song, 
       "album":album,
       "artist":artist,
@@ -76,7 +82,9 @@ export default {
       })
       .then(response=> {
         const deleteId = response.data.id
-        this.$store.dispatch('getId', {deleteId,spotifyId});
+        console.log(response)
+        
+        this.$store.dispatch('getId', {deleteId, spotifyId});
         this.modal = true;
         this.clearMessage();
        
@@ -91,7 +99,7 @@ export default {
     
     remove:function(){
       const id = this.item.deleteId
-      axios.delete(`http://127.0.0.1:8000/api/public/${id}`)
+      axios.delete(this.endpoint()+`/${id}`)
       this.$store.dispatch('getisFavorite', id);
       this.message = "お気に入りから削除しました";
       this.modal = true;

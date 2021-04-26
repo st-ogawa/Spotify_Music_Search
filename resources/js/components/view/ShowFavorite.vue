@@ -29,6 +29,7 @@
 
 import FavoriteButton from '../UI/FavoriteButton'
 import axios from 'axios'
+import Setting from '../../setting/setting'
 
 export default {
   components: { FavoriteButton },
@@ -45,9 +46,24 @@ export default {
   },
   
   methods:{
+    endpoint: function (){
+
+      this.$store.getters.getToken ? 
+      axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken 
+      : axios.defaults.headers.common['Authorization'] = "Bearer " + Setting.LARAVEL_TOKEN;
+
+      if(this.$store.getters.getToken){
+        return `http://127.0.0.1:8000/api/favorite`
+        
+      } 
+      else{
+        return `http://127.0.0.1:8000/api/public`
+      }
+    },
+    
     remove:function(){
       const id = this.item.id
-      axios.delete(`http://127.0.0.1:8000/api/favorite/${id}`)
+      axios.delete(this.endpoint()+`/${id}`)
       this.inActive  = false
       this.popUp = true
       this.message = "お気に入りから削除しました"
@@ -55,7 +71,7 @@ export default {
     },
     add:function(){
 
-      axios.post("http://127.0.0.1:8000/api/public",
+      axios.post(this.endpoint(),
       {"song" : this.item.song, 
       "album" : this.item.album, 
       "artist" : this.item.artist, 

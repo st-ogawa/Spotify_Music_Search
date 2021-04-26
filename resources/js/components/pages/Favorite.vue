@@ -48,66 +48,69 @@ import Loader from '../UI/loader.vue'
 
 export default {
   components: {  Header, ShowFavorite, Loader },
-   name:'favorite',
-   data(){
-       return{
-          data:[],
-          perPage:6,
-          dataExists:false,
-          error:'',
-          authToken:"",
-          loading:true,
-       }
-   },
-   created(){
+  name:'favorite',
+  data(){
+  return{
+    data:[],
+    perPage:6,
+    dataExists:false,
+    error:'',
+    authToken:"",
+    loading:true,
+  }
+  },
+  created(){
      this.$store.dispatch('getSessionToken')
   },
-   mounted:function(){
-       this.getFavoriteData();
-       this.$store.dispatch('getCurrentPage', 1)
-   },
-   computed:{
-     FavoriteItems : function () {
+  mounted:function(){
+      this.getFavoriteData();
+      this.$store.dispatch('getCurrentPage', 1)
+  },
+  computed:{
+    FavoriteItems : function () {
       return this.data.slice((this.$store.getters.getPage -1) * this.perPage, this.$store.getters.getPage * this.perPage)
-      
+    
     },
     getPageCount : function(){
       return Math.ceil(this.data.length / this.perPage)
     },
-   },
-   methods:{ 
-       getFavoriteData:function(){ 
-            let ENDPOINT ;
-            this.authToken = this.$store.getters.getToken 
+  },
+  methods:{ 
+    endpoint: function (){
+      this.$store.getters.getToken ? 
+      axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken 
+      : axios.defaults.headers.common['Authorization'] = "Bearer " + Setting.LARAVEL_TOKEN;
+      const user_id = this.$store.getters.getUserId;
+      if(this.$store.getters.getToken){
+        return `http://127.0.0.1:8000/api/favorite/${user_id}`
+      } 
+      else{
+        return "http://127.0.0.1:8000/api/public"
+      }
+    },
+    getFavoriteData:function(){ 
 
-            this.authToken? 
-            axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken 
-            : axios.defaults.headers.common['Authorization'] = "Bearer " + Setting.LARAVEL_TOKEN;
-
-            this.$store.getters.getToken ? ENDPOINT = "http://127.0.0.1:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public"
-
-            axios.get(ENDPOINT)
-            .then(response=>{
-              
-              if(!response.data.length){
-                this.dataExists = true
-                this.error = 'お気に入りはありません'
-              }else{
-                this.data = response.data;
-                this.loading = false
-              }
-              
-            })
-            
-       },
-       clickCallback:function(pageNum){
-            this.$store.dispatch('getCurrentPage', pageNum);
-            scroll({
-                top : 570,
-                behavior: "smooth"
-            })
-       }
+      axios.get(this.endpoint())
+      .then(response=>{
+        if(!response.data.length){
+          this.dataExists = true
+          this.error = 'お気に入りはありません'
+        }else{
+          this.data = response.data;
+          this.loading = false
+        }
+        
+      })
+        
+    },
+    clickCallback:function(pageNum){
+      this.$store.dispatch('getCurrentPage', pageNum);
+      scroll({
+        top : 570,
+        behavior: "smooth"
+      })
     }
+  }
 
 }
 </script>
