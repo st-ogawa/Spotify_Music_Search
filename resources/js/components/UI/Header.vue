@@ -48,7 +48,7 @@ export default {
   components:{Modal },
   created(){
     this.$store.dispatch('getSessionToken')
-    this.$store.dispatch('getSessionUserName')
+    this.$store.dispatch('getSessionUser')
   },
   
   data(){
@@ -62,8 +62,8 @@ export default {
     logout:function(){
         this.modal = true
         this.$store.dispatch('refreshStateToken')
-        this.$store.dispatch('refreshStateUserName')
-        setTimeout(()=>{this.$router.push('/')},1500)
+        this.$store.dispatch('refreshStateUser')
+        setTimeout(()=>{this.$router.push('/').catch(err => {})},1500)
     },
     dropdown(){
         this.isActive = !this.isActive

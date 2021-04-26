@@ -55,7 +55,6 @@ export default {
         'email' : this.loginMail,
         'password' : this.loginPass
       }).then(res=>{
-        
         this.modal = true
         this.$store.dispatch('getAuthToken', res.data.token)
         const user = res.data.user
@@ -112,3 +111,4 @@ font-weight: bold;
 
 }
 </style>
+
