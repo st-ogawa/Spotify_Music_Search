@@ -45,10 +45,12 @@
 import Modal from './Modal';
 
 export default {
-  components:{Modal },
+  components:{ Modal },
   created(){
     this.$store.dispatch('getSessionToken')
-    this.$store.dispatch('getSessionUser')
+    if(this.$store.getters.getToken){
+       this.$store.dispatch('getSessionUser')
+    }
   },
   
   data(){
@@ -63,6 +65,7 @@ export default {
         this.modal = true
         this.$store.dispatch('refreshStateToken')
         this.$store.dispatch('refreshStateUser')
+        window.scroll({top:0,behavior : "smooth"})
         setTimeout(()=>{this.$router.push('/').catch(err => {})},1500)
     },
     dropdown(){
