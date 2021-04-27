@@ -24,8 +24,21 @@ class FavoriteController extends Controller
             
         }
         else if($favorite_already_deleted){
+            
             Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->restore();
-           
+            $user_id = Favorite::where('spotify_id', request()->input('spotify_id'))
+                                ->whereNull('user_id')->first();
+            if($user_id){
+                $user_id_update = Favorite::where('spotify_id', request()->input('spotify_id'))
+                                  ->update(['user_id'=>request()->input('user_id')]);
+            } 
+            else{
+                $favorites = Favorite::where('user_id',request()->input('user_id'))
+                                        ->where('spotify_id', request()->input('spotify_id'))->get();
+                foreach($favorites as $favorite){
+                    return response()->json($favorite);
+                }
+            }
         }
         else{
             
@@ -49,7 +62,9 @@ class FavoriteController extends Controller
 
     public function delete_favorite($id){
         $deleteMusicData = Favorite::findOrFail($id);
+        $deleteMusicData->where('id', $id)->update(['user_id'=>null]);
         $deleteMusicData->delete();
+        return $deleteMusicData;
     }
 
     //-----public-----
@@ -65,12 +80,13 @@ class FavoriteController extends Controller
         
         if($favorite_already_exist){
             abort(403, 'すでに登録済みです');
-            
         }
         else if($favorite_already_deleted){
-           
             Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->restore();
-            dd($checkFavorite->where('spotify_id', request()->input('spotify_id'))->get());
+            $favorites = Favorite::where('user_id',null)->where('spotify_id', request()->input('spotify_id'))->get();
+            foreach($favorites as $favorite){
+                return response()->json($favorite);
+            }
         }
         else{
             $favorite = new Favorite();
