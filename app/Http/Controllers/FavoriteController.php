@@ -77,7 +77,7 @@ class FavoriteController extends Controller
         $favorite_already_deleted = Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->first();
         
       
-        if($userid_exist&&$favorite_already_exist){
+        if($userid_exist　&& $favorite_already_exist){
             abort(403, 'すでに登録済みです');
             
         }
