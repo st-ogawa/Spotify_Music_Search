@@ -82,8 +82,6 @@ export default {
       })
       .then(response=> {
         const deleteId = response.data.id
-        console.log(response)
-        
         this.$store.dispatch('getId', {deleteId, spotifyId});
         this.modal = true;
         this.clearMessage();

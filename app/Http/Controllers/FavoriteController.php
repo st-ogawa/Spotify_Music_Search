@@ -12,33 +12,30 @@ class FavoriteController extends Controller
     public function index(){
        
        
-       $checkFavorite = new Favorite();
+        $checkFavorite = new Favorite();
 
-       $favorite_already_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
-                                               ->whereNull('deleted_at')->first();
+        $favorite_already_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
+                                                ->whereNull('deleted_at')->first();
 
-       $favorite_already_deleted = Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->first();
+        $userid_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
+                                      ->where('user_id',request()->input('user_id'))->first();
+
+        $favorite_already_deleted = Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->first();
    
-        if($favorite_already_exist){
+        if( $userid_exist && $favorite_already_exist){
             abort(403, 'すでに登録済みです');
             
         }
         else if($favorite_already_deleted){
             
             Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->restore();
-            $user_id = Favorite::where('spotify_id', request()->input('spotify_id'))
-                                ->whereNull('user_id')->first();
-            if($user_id){
-                $user_id_update = Favorite::where('spotify_id', request()->input('spotify_id'))
-                                  ->update(['user_id'=>request()->input('user_id')]);
-            } 
-            else{
-                $favorites = Favorite::where('user_id',request()->input('user_id'))
-                                        ->where('spotify_id', request()->input('spotify_id'))->get();
-                foreach($favorites as $favorite){
-                    return response()->json($favorite);
-                }
+            
+            $favorites = Favorite::where('user_id',request()->input('user_id'))
+                                    ->where('spotify_id', request()->input('spotify_id'))->get();
+            foreach($favorites as $favorite){
+                return response()->json($favorite);
             }
+            
         }
         else{
             
@@ -62,9 +59,7 @@ class FavoriteController extends Controller
 
     public function delete_favorite($id){
         $deleteMusicData = Favorite::findOrFail($id);
-        $deleteMusicData->where('id', $id)->update(['user_id'=>null]);
         $deleteMusicData->delete();
-        return $deleteMusicData;
     }
 
     //-----public-----
@@ -76,14 +71,21 @@ class FavoriteController extends Controller
         $favorite_already_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
                                                 ->whereNull('deleted_at')->first();
 
+        $userid_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
+                                      ->whereNull('user_id')->first();
+
         $favorite_already_deleted = Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->first();
         
-        if($favorite_already_exist){
+      
+        if($userid_exist&&$favorite_already_exist){
             abort(403, 'すでに登録済みです');
+            
         }
         else if($favorite_already_deleted){
+            
             Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->restore();
-            $favorites = Favorite::where('user_id',null)->where('spotify_id', request()->input('spotify_id'))->get();
+            $favorites = Favorite::where('spotify_id', request()->input('spotify_id'))->where('user_id',null)->get();
+            
             foreach($favorites as $favorite){
                 return response()->json($favorite);
             }
@@ -100,6 +102,7 @@ class FavoriteController extends Controller
             $favorite->save();
             return $favorite;
         }
+        
     }
     public function get_public_music(){
         $favorite = Favorite::where('user_id',null)->get();
