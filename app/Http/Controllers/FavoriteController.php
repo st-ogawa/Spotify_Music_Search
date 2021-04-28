@@ -67,7 +67,7 @@ class FavoriteController extends Controller
     public function public_index(){
     
         $checkFavorite = new Favorite();
- 
+
         $favorite_already_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
                                                 ->whereNull('deleted_at')->first();
 
@@ -75,9 +75,8 @@ class FavoriteController extends Controller
                                       ->whereNull('user_id')->first();
 
         $favorite_already_deleted = Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->first();
-        
-      
-        if($userid_exist　&& $favorite_already_exist){
+   
+        if( $userid_exist && $favorite_already_exist){
             abort(403, 'すでに登録済みです');
             
         }

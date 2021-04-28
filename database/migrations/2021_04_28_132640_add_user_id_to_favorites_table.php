@@ -14,7 +14,8 @@ class AddUserIdToFavoritesTable extends Migration
     public function up()
     {
         Schema::table('favorites', function (Blueprint $table) {
-            $table->string('user_id')->nullalbe();
+            $table->integer('user_id')->nullalbe();
+            
         });
     }
 
