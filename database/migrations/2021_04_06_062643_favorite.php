@@ -21,7 +21,7 @@ class Favorite extends Migration
             $table->binary('jacket');
             $table->string('spotify_id');
             $table->string('spotify_url');
-            $table->string('user_id');
+            // $table->string('user_id')->nullalbe();
             $table->timestamps();
             $table->softDeletes();
         });
