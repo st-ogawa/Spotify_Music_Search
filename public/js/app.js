@@ -1997,7 +1997,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.$store.dispatch('getSessionToken');
-    this.$store.dispatch('getSessionUserName');
+
+    if (this.$store.getters.getToken) {
+      this.$store.dispatch('getSessionUser');
+    }
   },
   data: function data() {
     return {
@@ -2012,9 +2015,13 @@ __webpack_require__.r(__webpack_exports__);
 
       this.modal = true;
       this.$store.dispatch('refreshStateToken');
-      this.$store.dispatch('refreshStateUserName');
+      this.$store.dispatch('refreshStateUser');
+      window.scroll({
+        top: 0,
+        behavior: "smooth"
+      });
       setTimeout(function () {
-        _this.$router.push('/');
+        _this.$router.push('/')["catch"](function (err) {});
       }, 1500);
     },
     dropdown: function dropdown() {
@@ -2255,14 +2262,20 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    endpoint: function endpoint() {
+      this.$store.getters.getToken ? axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken : axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + _setting_setting__WEBPACK_IMPORTED_MODULE_3__["default"].LARAVEL_TOKEN;
+      var user_id = this.$store.getters.getUserId;
+
+      if (this.$store.getters.getToken) {
+        return "http://127.0.0.1:8000/api/favorite/".concat(user_id);
+      } else {
+        return "http://127.0.0.1:8000/api/public";
+      }
+    },
     getFavoriteData: function getFavoriteData() {
       var _this = this;
 
-      var ENDPOINT;
-      this.authToken = this.$store.getters.getToken;
-      this.authToken ? axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken : axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + _setting_setting__WEBPACK_IMPORTED_MODULE_3__["default"].LARAVEL_TOKEN;
-      this.$store.getters.getToken ? ENDPOINT = "http://127.0.0.1:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public";
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(ENDPOINT).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(this.endpoint()).then(function (response) {
         if (!response.data.length) {
           _this.dataExists = true;
           _this.error = 'お気に入りはありません';
@@ -2719,6 +2732,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _UI_FavoriteButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../UI/FavoriteButton */ "./resources/js/components/UI/FavoriteButton.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _setting_setting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../setting/setting */ "./resources/js/setting/setting.js");
 //
 //
 //
@@ -2746,6 +2760,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2761,16 +2776,25 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    endpoint: function endpoint() {
+      this.$store.getters.getToken ? axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken : axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common['Authorization'] = "Bearer " + _setting_setting__WEBPACK_IMPORTED_MODULE_2__["default"].LARAVEL_TOKEN;
+
+      if (this.$store.getters.getToken) {
+        return "http://127.0.0.1:8000/api/favorite";
+      } else {
+        return "http://127.0.0.1:8000/api/public";
+      }
+    },
     remove: function remove() {
       var id = this.item.id;
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a["delete"]("http://127.0.0.1:8000/api/favorite/".concat(id));
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a["delete"](this.endpoint() + "/".concat(id));
       this.inActive = false;
       this.popUp = true;
       this.message = "お気に入りから削除しました";
       this.clearMessage();
     },
     add: function add() {
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("http://127.0.0.1:8000/api/public", {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(this.endpoint(), {
         "song": this.item.song,
         "album": this.item.album,
         "artist": this.item.artist,
@@ -2852,6 +2876,15 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    endpoint: function endpoint() {
+      this.$store.getters.getToken ? axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken : axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + _setting_setting__WEBPACK_IMPORTED_MODULE_2__["default"].LARAVEL_TOKEN;
+
+      if (this.$store.getters.getToken) {
+        return "http://127.0.0.1:8000/api/favorite";
+      } else {
+        return "http://127.0.0.1:8000/api/public";
+      }
+    },
     add: function add() {
       var _this = this;
 
@@ -2861,10 +2894,7 @@ __webpack_require__.r(__webpack_exports__);
       var artist = this.item.artist;
       var spotifyId = this.item.spotifyId;
       var externalLink = this.item.externalLink;
-      var ENDPOINT;
-      this.$store.getters.getToken ? axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken : axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer " + _setting_setting__WEBPACK_IMPORTED_MODULE_2__["default"].LARAVEL_TOKEN;
-      this.$store.getters.getToken ? ENDPOINT = "http://127.0.0.1:8000/api/favorite" : ENDPOINT = "http://127.0.0.1:8000/api/public";
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(ENDPOINT, {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(this.endpoint(), {
         "song": song,
         "album": album,
         "artist": artist,
@@ -2895,7 +2925,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     remove: function remove() {
       var id = this.item.deleteId;
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("http://127.0.0.1:8000/api/public/".concat(id));
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"](this.endpoint() + "/".concat(id));
       this.$store.dispatch('getisFavorite', id);
       this.message = "お気に入りから削除しました";
       this.modal = true;
@@ -60030,25 +60060,31 @@ var actions = {
     var commit = _ref.commit;
     commit('setLoginUser', user);
   },
-  getSessionUserName: function getSessionUserName(_ref2) {
+  getSessionUser: function getSessionUser(_ref2) {
     var commit = _ref2.commit;
-    commit('setSessionUserName');
+    commit('setSessionUser');
   },
-  refreshStateUserName: function refreshStateUserName(_ref3) {
+  refreshStateUser: function refreshStateUser(_ref3) {
     var commit = _ref3.commit;
-    commit('refreshUserName');
+    commit('refreshUser');
   }
 };
 var mutations = {
   setLoginUser: function setLoginUser(state, user) {
-    sessionStorage.setItem('user', user.name);
+    var users = {
+      name: user.name,
+      id: user.id
+    };
+    sessionStorage.setItem('user', JSON.stringify(users));
     state.userName = user.name;
     state.userId = user.id;
   },
-  setSessionUserName: function setSessionUserName(state) {
-    state.userName = sessionStorage.getItem('user');
+  setSessionUser: function setSessionUser(state) {
+    var user = JSON.parse(sessionStorage.getItem('user'));
+    state.userName = user.name;
+    state.userId = user.id;
   },
-  refreshUserName: function refreshUserName(state) {
+  refreshUser: function refreshUser(state) {
     state.userName = Object.assign(state, getDefaultState());
   }
 };
