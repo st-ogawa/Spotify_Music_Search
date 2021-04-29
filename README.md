@@ -39,6 +39,12 @@ $ composer install
 ↓
 $ cp .env.example .env
 ↓
+データベースを作成し、envファイルに記述して下さい
+↓
+$ php artisan migrate
+↓
+$ php artisan passport:install
+↓
 $ php artisan key:generate
 ↓
 $ php atisan serve
