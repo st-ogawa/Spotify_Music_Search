@@ -32,8 +32,17 @@ vuejs-paginate : 2.1.0
 ```
 
 $ git clone https://github.com/B-FORME/Spotify_Ogawa.git
+↓
 $ npm install
+↓
+$ composer install
+↓
+$ cp .env.example .env
+↓
+$ php artisan key:generate
+↓
 $ php atisan serve
+↓
 $ npm run dev
 
 ```
@@ -52,8 +61,6 @@ const CLIENT_SECRET ="";
 
 export default { CLIENT_ID, CLIENT_SECRET}
 ```
-
-
 
 ## License
 
