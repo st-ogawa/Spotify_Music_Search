@@ -4,6 +4,9 @@ SpotifyAPIを利用した楽曲検索サイトです。
 お気に入りの楽曲を見つけたらお気に入り登録ができて、楽曲の詳細ページに飛ぶことができます。
 　
 
+![musicsearch](https://user-images.githubusercontent.com/75051280/116491750-9074b480-a8d5-11eb-9f18-99e84ed2951d.gif)
+
+
 ## Dependency
 
 ```
@@ -25,7 +28,8 @@ vuejs-paginate : 2.1.0
 
 $ git clone https://github.com/B-FORME/Spotify_Ogawa.git
 $ npm install
-$ npm run serve
+$ php atisan serve
+$ npm run dev
 
 ```
 
