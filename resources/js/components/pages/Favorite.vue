@@ -82,10 +82,10 @@ export default {
       : axios.defaults.headers.common['Authorization'] = "Bearer " + Setting.LARAVEL_TOKEN;
       const user_id = this.$store.getters.getUserId;
       if(this.$store.getters.getToken){
-        return `http://127.0.0.1:8000/api/favorite/${user_id}`
+        return `https://st-ogawa9632.site/api/favorite/${user_id}`
       } 
       else{
-        return "http://127.0.0.1:8000/api/public"
+        return "https://st-ogawa9632.site//api/public"
       }
     },
     getFavoriteData:function(){ 

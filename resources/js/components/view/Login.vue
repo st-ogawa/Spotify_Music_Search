@@ -51,7 +51,7 @@ export default {
   },
   methods:{
     login(){
-      axios.post('http://127.0.0.1:8000/api/login',{
+      axios.post('https://st-ogawa9632.site/api/login',{
         'email' : this.loginMail,
         'password' : this.loginPass
       }).then(res=>{

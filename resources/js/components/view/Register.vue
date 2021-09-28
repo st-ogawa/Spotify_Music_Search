@@ -60,7 +60,7 @@ export default {
   methods:{
     register:function(){
       
-      axios.post('http://127.0.0.1:8000/api/register',{
+      axios.post('https://st-ogawa9632.site/api/register',{
         'name': this.userName,
         'email' : this.registerMail,
         'password' : this.registerPass,
