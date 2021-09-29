@@ -85,7 +85,7 @@ export default {
         return `https://st-ogawa9632.site/api/favorite/${user_id}`
       } 
       else{
-        return "https://st-ogawa9632.site//api/public"
+        return "https://st-ogawa9632.site/api/public"
       }
     },
     getFavoriteData:function(){ 

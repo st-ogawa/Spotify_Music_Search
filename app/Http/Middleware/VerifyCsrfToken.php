@@ -21,5 +21,6 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'api/post/*',
         'https://accounts.spotify.com/*',
+        'https://st-ogawa9632.site/*'
     ];
 }
