@@ -13,16 +13,16 @@ class FavoriteController extends Controller
        
        
         $checkFavorite = new Favorite();
-
+        var_dump($checkFavorite);
         $favorite_already_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
                                                 ->whereNull('deleted_at')->first();
 
-        $userid_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
+        $user_id_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
                                       ->where('user_id',request()->input('user_id'))->first();
 
         $favorite_already_deleted = Favorite::onlyTrashed()->where('spotify_id', request()->input('spotify_id'))->first();
-   
-        if( $userid_exist && $favorite_already_exist){
+         
+        if( $user_id_exist && $favorite_already_exist){
             abort(403, 'すでに登録済みです');
             
         }
