@@ -27,9 +27,7 @@
 
 <script>
 
-import axios from 'axios'
 import FavoriteButton from '../UI/FavoriteButton';
-import Setting from '../../setting/setting'
 
 export default {
   components: { FavoriteButton },
@@ -45,33 +43,21 @@ export default {
       message:'',
       modal:false,
     }
-    
   },
 
   methods:{
-    endpoint: function (){
-
-      this.$store.getters.getToken ? 
-      axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken 
-      : axios.defaults.headers.common['Authorization'] = "Bearer " + Setting.LARAVEL_TOKEN;
-
-      if(this.$store.getters.getToken){
-        return "https://st-ogawa9632.site/api/favorite" 
-      } 
-      else{
-        return "https://st-ogawa9632.site/api/public"
-      }
-    },
 
     add: function(){
+  
       const song = this.item.song;
       const album = this.item.album;
       const jacket = this.item.jacket;
       const artist = this.item.artist;
       const spotifyId = this.item.spotifyId;
       const externalLink = this.item.externalLink
-    
-      axios.post(this.endpoint(),
+      
+      
+      this.$http.post(this.endpoint(),
       {"song":song, 
       "album":album,
       "artist":artist,
@@ -97,7 +83,7 @@ export default {
     
     remove:function(){
       const id = this.item.deleteId
-      axios.delete(this.endpoint()+`/${id}`)
+      this.$http.delete(this.endpoint()+`/${id}`)
       this.$store.dispatch('getisFavorite', id);
       this.message = "お気に入りから削除しました";
       this.modal = true;

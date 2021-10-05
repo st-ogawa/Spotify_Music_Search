@@ -32,7 +32,6 @@
 <script>
 import LoginButton from '../UI/LoginButton.vue'
 import LoginForm from '../UI/LoginForm.vue'
-import axios from 'axios'
 import Modal from '../UI/Modal.vue';
 
 export default {
@@ -60,7 +59,7 @@ export default {
   methods:{
     register:function(){
       
-      axios.post('https://st-ogawa9632.site/api/register',{
+      this.$http.post('api/register',{
         'name': this.userName,
         'email' : this.registerMail,
         'password' : this.registerPass,

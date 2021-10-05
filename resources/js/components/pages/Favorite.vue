@@ -40,10 +40,9 @@
 
 <script>
 
-import axios from 'axios'
+
 import Header from '../UI/Header.vue'
 import ShowFavorite from '../view/ShowFavorite'
-import Setting from '../../setting/setting'
 import Loader from '../UI/loader.vue'
 
 export default {
@@ -76,21 +75,16 @@ export default {
     },
   },
   methods:{ 
-    endpoint: function (){
-      this.$store.getters.getToken ? 
-      axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.getters.getToken 
-      : axios.defaults.headers.common['Authorization'] = "Bearer " + Setting.LARAVEL_TOKEN;
-      const user_id = this.$store.getters.getUserId;
-      if(this.$store.getters.getToken){
-        return `https://st-ogawa9632.site/api/favorite/${user_id}`
-      } 
-      else{
-        return "https://st-ogawa9632.site/api/public"
-      }
-    },
+    
     getFavoriteData:function(){ 
+      const user_id = this.$store.getters.getUserId;
+      let endpoint = ''
 
-      axios.get(this.endpoint())
+      this.$store.getters.getToken ? 
+      endpoint = this.endpoint()+`/${user_id}` :
+      endpoint = this.endpoint()
+
+      this.$http.get(endpoint)
       .then(response=>{
         if(!response.data.length){
           this.dataExists = true

@@ -26,7 +26,6 @@
 
 import LoginButton from '../UI/LoginButton.vue'
 import LoginForm from '../UI/LoginForm.vue'
-import axios from 'axios'
 import Modal from '../UI/Modal.vue';
 
 export default {
@@ -51,7 +50,7 @@ export default {
   },
   methods:{
     login(){
-      axios.post('https://st-ogawa9632.site/api/login',{
+      this.$http.post('api/login',{
         'email' : this.loginMail,
         'password' : this.loginPass
       }).then(res=>{
