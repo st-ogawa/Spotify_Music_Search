@@ -13,7 +13,7 @@ class FavoriteController extends Controller
        
        
         $checkFavorite = new Favorite();
-        var_dump($checkFavorite);
+        
         $favorite_already_exist = $checkFavorite->where('spotify_id', request()->input('spotify_id'))
                                                 ->whereNull('deleted_at')->first();
 

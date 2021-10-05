@@ -3,16 +3,29 @@ import router from './router'
 import store from './store/index'
 import axios from 'axios'
 import Paginate from 'vuejs-paginate'
+import Setting from './setting/setting'
+import Mixin from './mixin/mixin'
 
 require('./bootstrap');
 
 window.Vue = require('vue');
-
+Vue.mixin(Mixin);
 Vue.component('paginate', Paginate)
 Vue.component('app', require('./components/App.vue').default);
 
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
+let token = ''
+
+store.getters.getToken ? 
+token = store.getters.getToken : token = Setting.LARAVEL_TOKEN;
+
+
+Vue.prototype.$http = axios.create({
+    headers:{'Authorization' : "Bearer " + token},
+    baseURL: process.env.MIX_BASE_URL,
+    timeout : 10000,
+    responseType: 'json' 
+}) 
 
 const app = new Vue({
     el: '#app',
