@@ -19,7 +19,7 @@ let token = ''
 store.getters.getToken ? 
 token = store.getters.getToken : token = Setting.LARAVEL_TOKEN;
 
-console.log(process.env.MIX_BASE_URL)
+console.log(process.env)
 Vue.prototype.$http = axios.create({
     headers:{'Authorization' : "Bearer " + token},
     baseURL: process.env.MIX_BASE_URL,
